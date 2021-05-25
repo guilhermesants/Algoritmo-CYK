@@ -9,23 +9,35 @@ import java.util.List;
 
 public class LeituraArquivo {
 	
-	private static String path = "/Algoritmo CYK/arquivo/gramatica";
+	private static String caminhoArquivo = "C:\\Repositorio\\Algoritmo-CYK\\src\\gramatica.txt";
 	
-	public static ArrayList<?> retornaDadosArquivo() {
+	
+	public static List<?> retornaDadosArquivo() throws IOException
+	{
+		List<String> retornoGramatica = new ArrayList<String>();
 		
-		List<String> retornoGramatica = new ArrayList<>();
+		FileInputStream arquivo = new FileInputStream(caminhoArquivo);
+		InputStreamReader input = new InputStreamReader(arquivo);
+		BufferedReader br = new BufferedReader(input);
 		
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(path), "ISO-8859-1")))
+		String line = br.readLine();
+		
+		while (true)
 		{
+			if (line != null) 
+			{
+				retornoGramatica.add(line);
+			} 
+			else 
+			{
+				break;
+			}
 			
+			line = br.readLine();
 		}
-		catch (IOException ex)
-		{
-			System.out.println(ex.getMessage());
-		}
-		
-		return null;
+		br.close();
 
+		return retornoGramatica;
 	}
-
+	
 }
