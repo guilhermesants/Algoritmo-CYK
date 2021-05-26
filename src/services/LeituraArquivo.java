@@ -9,10 +9,10 @@ import java.util.List;
 
 public class LeituraArquivo {
 	
-	private static String caminhoArquivo = "C:\\Repositorio\\Algoritmo-CYK\\src\\gramatica.txt";
+	// "C:\\Repositorio\\Algoritmo-CYK\\src\\gramatica.txt";
 	
 	
-	public static List<?> retornaDadosArquivo() throws IOException
+	public static List<String> retornaDadosArquivo(String caminhoArquivo) throws IOException
 	{
 		List<String> retornoGramatica = new ArrayList<String>();
 		
