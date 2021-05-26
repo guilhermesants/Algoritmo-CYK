@@ -18,51 +18,42 @@ public class AlgoritmoCYK {
 			System.out.println(e.getMessage());
 		}
 		
+		
 		int tamanhoDaPalavra = palavra.length();
-		
-		// criando um vetor de caracteres com tamanhdo da string passado
-		char[] vetorCaracteres = new char[tamanhoDaPalavra];
-		
-		
-		for (int a = 0; a < tamanhoDaPalavra; a++) {
-			vetorCaracteres[a] = palavra.charAt(a);
-		}
-		
 		
 		String[][] matrizTabela = new String[tamanhoDaPalavra][tamanhoDaPalavra];
 		
 		String[] regra = null;
-		for (int i = 0; i < tamanhoDaPalavra; i++)
+		
+		for (int j = 0; j < tamanhoDaPalavra; j++) 
 		{
-			
-			if (i < retorno.size()) 
+			if (j < retorno.size()) 
 			{
-				regra = retorno.get(i).split(" ");
+				regra = retorno.get(j).split(" ");
 			}
-			
-			String caractere = String.valueOf(palavra.charAt(i));
 
-			for (int j = 0; j < regra.length; j++) 
+			var simboloTerminal = regra[2];
+			for (int z = 0; z < tamanhoDaPalavra; z++)
 			{
-				if (regra[j].equals(caractere))
+				char simbolo = palavra.charAt(z);
+
+				if (simboloTerminal.equals(String.valueOf(simbolo)))
 				{
-					matrizTabela[i][i] = regra[0];
+					matrizTabela[z][z] = regra[0];
 				}
 			}
-
 		}
 
-
+		
+		// exibindo tabela
 		for (int x = 0; x < matrizTabela.length; x++)
 		{
 			for (int z = 0; z < matrizTabela.length; z++)
 			{
-				System.out.print(matrizTabela[x][z] + " ");
+				System.out.print(matrizTabela[x][z] + "	");
 			}
 			System.out.println();
 		}
-		
-		
 	}
 
 }
