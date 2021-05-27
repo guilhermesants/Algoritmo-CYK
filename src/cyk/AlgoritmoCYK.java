@@ -18,28 +18,29 @@ public class AlgoritmoCYK {
 			System.out.println(e.getMessage());
 		}
 		
+		String[][] matrizRegra = FormataRetorno(retorno);
 		
 		int tamanhoDaPalavra = palavra.length();
 		
 		String[][] matrizTabela = new String[tamanhoDaPalavra][tamanhoDaPalavra];
 		
+		
 		String[] regra = null;
 		
-		for (int j = 0; j < tamanhoDaPalavra; j++) 
+		for (int p = 0; p < matrizRegra.length; p++)
 		{
-			if (j < retorno.size()) 
+			for (int j = 0; j < tamanhoDaPalavra; j++) 
 			{
-				regra = retorno.get(j).split(" ");
-			}
+				String caracterTerminal = matrizRegra[p][1];
 
-			var simboloTerminal = regra[2];
-			for (int z = 0; z < tamanhoDaPalavra; z++)
-			{
-				char simbolo = palavra.charAt(z);
-
-				if (simboloTerminal.equals(String.valueOf(simbolo)))
+				for (int z = 0; z < tamanhoDaPalavra; z++)
 				{
-					matrizTabela[z][z] = regra[0];
+					char simbolo = palavra.charAt(z);
+	
+					if (caracterTerminal.equals(String.valueOf(simbolo)))
+					{
+						matrizTabela[z][z] = matrizRegra[p][0];
+					}
 				}
 			}
 		}
@@ -54,6 +55,101 @@ public class AlgoritmoCYK {
 			}
 			System.out.println();
 		}
+
+
+		for (int i = 2; i < tamanhoDaPalavra; i++)
+		{
+			for (int h = 1; h < tamanhoDaPalavra - i + 1; h++)
+			{
+				int j = h + i - 1;
+				for (int k = h; k < j; k++)
+				{
+					String caractere = analizaSubstring(retorno, matrizTabela, h, j, k);
+					if (!matrizTabela[h][j].contains(caractere))
+					{
+						matrizTabela[h][j] = caractere;
+					}
+				}
+			}
+		}
+
+	}
+	
+	private static String analizaSubstring(List<String> retornoGramatica, String[][] matriz, int inicial, int Final, int divisao)
+	{
+		String[][] matrizDeRegras = new String[retornoGramatica.size()][retornoGramatica.size()];
+		
+		for (int i = 0; i < matrizDeRegras.length; i++)
+		{
+
+			String[] retorno = retornoGramatica.get(i).split(" ");
+			matrizDeRegras[i] = retorno;
+		}
+		
+		
+		String ret = "";
+		
+		for (int i = 0; i < matrizDeRegras.length; i++)
+		{
+			
+			String b = matrizDeRegras[i][2];
+			String c = matrizDeRegras[i][3];
+			
+			var primeiro = matriz[inicial][divisao].contains(b);
+			var segundo = matriz[divisao + 1][Final].contains(c);
+			
+			if (primeiro && segundo)
+			{
+				ret = ret + " " + matrizDeRegras[i][0];
+			}
+		}
+		
+		
+		return ret;
+	}
+	
+	
+	public static String[][] FormataRetorno(List<String> retorno)
+	{
+		String[][] matrizRegras = new String[retorno.size()][retorno.size()];
+		
+		int i = 0;
+		for (String regra : retorno)
+		{
+			String caracterDaEsquerda = simbolosEsquerda(regra);
+			String[] caracteresDireita = simbolosDireita(regra);
+			
+			
+			matrizRegras[i][0] = caracterDaEsquerda;
+
+			for (int j = 0; j < caracteresDireita.length; j++)
+			{
+				matrizRegras[i][j + 1] = caracteresDireita[j];
+			}
+			i++;
+		}
+		
+		return matrizRegras;
+	}
+	
+	private static String simbolosEsquerda(String regra)
+	{
+		String[] caracteres = retornaVetor(regra);
+		String caracterEsquerdo = caracteres[0];
+		return caracterEsquerdo;
+	}
+	
+	private static String[] simbolosDireita(String regra)
+	{
+		String[] caracteres = retornaVetor(regra);
+		String[] caracteresDireita = caracteres[1].split("\\|");
+		return caracteresDireita;
+	}
+	
+	private static String[] retornaVetor(String regra)
+	{
+		String[] caracteres = regra.replace(" ", "").split("=>");
+		return caracteres;
 	}
 
 }
