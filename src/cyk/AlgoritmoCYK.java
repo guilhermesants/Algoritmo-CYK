@@ -7,16 +7,9 @@ import services.LeituraArquivo;
 
 public class AlgoritmoCYK {
 	
-	public static void verificaPalavra(String palavra)
+	public static void verificaPalavra(String palavra, String caminhoArquivo)
 	{
-		List<String> retorno = new ArrayList<String>();
-		
-		try {
-			retorno = LeituraArquivo.retornaDadosArquivo("C:\\Repositorio\\Algoritmo-CYK\\src\\gramatica.txt");
-		}
-		catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
+		List<String> retorno = retornaRegrasArquivo(caminhoArquivo);
 		
 		String[][] matrizRegra = FormataRetorno(retorno);
 		
@@ -25,8 +18,6 @@ public class AlgoritmoCYK {
 		String[][] matrizTabela = new String[tamanhoDaPalavra][tamanhoDaPalavra];
 		
 		PreencheMatrizVazia(matrizTabela);
-		
-		String[] regra = null;
 		
 		
 		for (int p = 0; p < matrizRegra.length; p++)
@@ -64,14 +55,7 @@ public class AlgoritmoCYK {
 		}
 		
 		// exibindo tabela
-		for (int x = 0; x < matrizTabela.length; x++)
-		{
-			for (int z = 0; z < matrizTabela.length; z++)
-			{
-				System.out.print(matrizTabela[x][z] + "	");
-			}
-			System.out.println();
-		} 
+		printaTabela(matrizTabela);
 		
 		System.out.println(verificaPalavra(matrizTabela, matrizRegra));
 
@@ -111,7 +95,7 @@ public class AlgoritmoCYK {
 		return ret;
 	}	
 	
-	public static String[][] FormataRetorno(List<String> retorno)
+	private static String[][] FormataRetorno(List<String> retorno)
 	{
 		String[][] matrizRegras = new String[retorno.size()][retorno.size()];
 		
@@ -179,5 +163,29 @@ public class AlgoritmoCYK {
 		}
 	}
 
+	private static void printaTabela(String[][] matrizTabela)
+	{
+		for (int x = 0; x < matrizTabela.length; x++)
+		{
+			for (int z = 0; z < matrizTabela.length; z++)
+			{
+				System.out.print(matrizTabela[x][z] + "	");
+			}
+			System.out.println();
+		}
+	}
 
+	private static List<String> retornaRegrasArquivo(String caminhoArquivo)
+	{
+		List<String> retorno = new ArrayList<String>();
+		
+		try {
+			retorno = LeituraArquivo.retornaDadosArquivo(caminhoArquivo);
+		}
+		catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return retorno;
+	}
 }
